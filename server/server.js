@@ -76,8 +76,10 @@ app.get('/data', async(req, res) => {
     }
 })
 
-app.get('/current/day/workout', async(req, res) => {
-      const currentDate = new Date().toDateString();
+app.get('/current/day/workout/:date', async(req, res) => {
+      const date = req.params.date;
+      const currentDate = new Date(date).toDateString();
+      console.log(currentDate)
 try {
        const userId = isAuth(req);
      const todays_workout = await db.query(`SELECT name, reps, weight FROM workout_logs JOIN exercises 
@@ -114,7 +116,7 @@ try {
 } catch (error) {
     console.log(error.message)
 }
-});
+}); 
 
 app.post('/add', async(req, res) => {
     const userId = isAuth(req);
