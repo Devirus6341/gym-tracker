@@ -6,15 +6,15 @@ import axios from "axios";
 import { UserContext } from "../userContext";
 import { Plus } from "lucide-react";
 
+
 function Home() {
   const [user] = useContext(UserContext)
-  const currentDate = new Date().toDateString();
-  const [date] = useState(currentDate)
   const [todaysWorkout, setTodaysWorkout] = useState([])
- 
+     const [date, setDate] = useState(new Date());
+
   useEffect(() => {
     async function getCurrentDayWorkout() {
-      const response = await axios.get('http://localhost:5000/current/day/workout', {
+      const response = await axios.get(`http://localhost:5000/current/day/workout/${date}`, {
         headers: {
           Authorization: `Bearer ${user?.accessToken}`
         }
@@ -29,13 +29,12 @@ function Home() {
        setTodaysWorkout(grouped)
     }
     getCurrentDayWorkout()
-  },[user?.accessToken])
-
+  },[user?.accessToken, date])
 return (
   <div>
-    <Header />
+    <Header data={date} setDate={setDate} />
     <div className="log-date">
-      <p className="current-date">{date}   {todaysWorkout &&  Object.keys(todaysWorkout).length > 0 ? <span><Link to="/categories" className="alt-add-btn"> <Plus size={20}/> </Link></span> : ''}</p>
+      <p className="current-date">{date.toDateString()}    {todaysWorkout &&  Object.keys(todaysWorkout).length > 0 ? <span><Link to="/categories" className="alt-add-btn"> <Plus size={20}/> </Link></span> : ''}</p>
     </div>
   <div className="home-container">
     {todaysWorkout && Object.keys(todaysWorkout).length > 0 ? (

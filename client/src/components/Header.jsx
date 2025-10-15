@@ -1,13 +1,12 @@
 import { useContext, useState } from "react";
 import { UserContext } from "../userContext";
 import styles from '../styles/Header.module.css'
-import Calendar from 'react-calendar';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Calendar from 'react-calendar';
 
-function Header() {
+function Header({date, setDate}) {
     const [user, setUser] = useContext(UserContext);
-    const [date, setDate] = useState(new Date());
     const [isClicked, setIsClicked] = useState(false)
     const navigate = useNavigate()
 
@@ -28,9 +27,7 @@ function Header() {
   const handleClicked = async() => {
     !isClicked ? setIsClicked(true) : setIsClicked (false)
   }
-
   
-
 
 return <header className={styles.header}>
         <div>
@@ -39,12 +36,15 @@ return <header className={styles.header}>
         <div className={styles.navigation}>
             {user ? (
             <>
-            <div className={styles.calender_div}>
-               <img onClick={handleClicked} src="/Images/icons8-calendar-50.png" alt="calender" className={styles.calender_img}/>
+            <div className={styles.calender_div}   tabIndex={0}
+             onBlur={() => {
+              setTimeout(() => setIsClicked(false), 200);
+            }}
+             >
+               <img onClick={handleClicked}  src="/Images/icons8-calendar-50.png" alt="calender" className={styles.calender_img}/>
              <Calendar className={`${styles.calender} ${isClicked ? styles.calender_show : ''}`}
                onChange={setDate} 
-               value={date}      
-                  />
+               value={date} />
             </div>
   
              <Link to='/overall-analysis' className={styles.header_link}>< p>Analysis</p></Link>

@@ -12,8 +12,6 @@ function Login() {
 
 const handleSubmit = async (event)=> {
     event.preventDefault();
-    setUserName('');
-    setPassword('');
     try {
         const response = await axios.post('http://localhost:5000/signup',{username, password});
         const reply = response.data;
@@ -23,6 +21,9 @@ const handleSubmit = async (event)=> {
     } catch (error) {
         console.log(error.message);
        setError(error.response.data.error)
+    } finally {
+              setUserName('');
+                setPassword('');
     }
    
 }

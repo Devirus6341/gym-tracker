@@ -9,24 +9,31 @@ function Login() {
     const [username, setUserName] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
 
     const navigate = useNavigate()
 
 const handleSubmit = async (event)=> {
     event.preventDefault();
-    setUserName('');
-    setPassword('');
+    setLoading(true)
+
     try {
         const response = await axios.post('http://localhost:5000/login',{username, password});
         const reply = response.data;
         if (reply.accessToken) {
         setUser({accessToken: reply.accessToken});
         console.log({accessToken: reply.accessToken});
-        navigate('/', {replace: true})
+         setTimeout(() => {
+        navigate('/', { replace: true });
+  }, 100);
         }
     } catch (error) {
         console.log(error.message);
        setError(error.response.data.error)
+    } finally {
+        setLoading(false)
+           setUserName('');
+            setPassword('');
     }
    
 }
@@ -39,7 +46,9 @@ return(
             <h2>Login</h2>
             <input type="text" placeholder="Username" onChange={(e) => setUserName(e.target.value)} value={username}/>
             <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} value={password}/>
-            <button type="submit">Login</button>
+            <button type="submit"  disabled={loading}>
+                  {loading ? <div className={styles.spinner}></div> : "Submit"}
+                 </button>
             <p>Dont have an account? <Link to='/signup'>Sign up</Link></p>
         </form>
         </div>

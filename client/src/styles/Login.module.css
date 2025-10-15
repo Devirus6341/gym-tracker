@@ -50,6 +50,9 @@ body {
     width: 96.5%;
     height: 50px;
     font-size: 16px;
+   display: flex;
+   align-items: center;
+   justify-content: center;
        background-color: rgb(96, 167, 167);
        color: white;
        border: none;
@@ -70,4 +73,19 @@ body {
     font-weight: 600;
     font-size: 20px;
     color: rgb(206, 13, 13);
+}
+
+.spinner {
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid white;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
